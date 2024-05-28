@@ -40,9 +40,11 @@ const deleteExpense = (id) => {
     });
 };
 
-export default {
+const expenseService = {
     getExpenses,
     addExpense,
     updateExpense,
     deleteExpense
 };
+
+export default expenseService;
