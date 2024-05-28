@@ -1,25 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './Login';
+import Register from './Register';
+import Expenses from './Expenses';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+
+    return (
+        <Router>
+            <div>
+                <Routes>
+                    <Route path="/login" element={user ? <Navigate to="/expenses" /> : <Login setUser={setUser} />} />
+                    <Route path="/register" element={user ? <Navigate to="/expenses" /> : <Register setUser={setUser} />} />
+                    <Route path="/expenses" element={user ? <Expenses /> : <Navigate to="/login" />} />
+                    <Route path="/" element={user ? <Navigate to="/expenses" /> : <Navigate to="/login" />} />
+                </Routes>
+            </div>
+        </Router>
+    );
+};
 
 export default App;
