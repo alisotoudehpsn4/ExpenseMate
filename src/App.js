@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import Login from './Login';
 import Register from './Register';
 import Expenses from './Expenses';
+import Analytics from './Analytics'; // Import Analytics component
 import './fontAwesome';
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
                     <Route path="/login" element={user ? <Navigate to="/expenses" /> : <Login setUser={setUser} />} />
                     <Route path="/register" element={user ? <Navigate to="/expenses" /> : <Register setUser={setUser} />} />
                     <Route path="/expenses" element={user ? <Expenses /> : <Navigate to="/login" />} />
+                    <Route path="/analytics" element={user ? <Analytics /> : <Navigate to="/login" />} /> {/* Add Analytics route */}
                     <Route path="/" element={user ? <Navigate to="/expenses" /> : <Navigate to="/login" />} />
                 </Routes>
             </div>

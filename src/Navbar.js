@@ -3,13 +3,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './fontAwesome'; // Ensure this path is correct
+import './fontAwesome';
 
 const Navbar = ({ user, setUser }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         setUser(null);
         navigate('/login');
     };
@@ -21,11 +22,12 @@ const Navbar = ({ user, setUser }) => {
                     <FontAwesomeIcon icon="dollar-sign" className="h-6 w-6 mr-2" />
                     Expensify
                 </Link>
-                <div className="space-x-4">
+                <div className="flex items-center space-x-4">
                     <Link to="/" className="text-gray-300 hover:text-white">Home</Link>
                     {user ? (
                         <>
                             <Link to="/expenses" className="text-gray-300 hover:text-white">Expenses</Link>
+                            <Link to="/analytics" className="text-gray-300 hover:text-white">Analytics</Link> {/* Add Analytics link */}
                             <button
                                 onClick={handleLogout}
                                 className="text-gray-300 hover:text-white"
