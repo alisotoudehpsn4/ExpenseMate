@@ -1,7 +1,8 @@
-// src/Navbar.js
+// src/components/Navbar.js
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Navbar = ({ user, setUser }) => {
     const navigate = useNavigate();
@@ -15,7 +16,10 @@ const Navbar = ({ user, setUser }) => {
     return (
         <nav className="bg-gray-800 p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <Link to="/" className="text-white text-xl font-bold">MyApp</Link>
+                <Link to="/" className="flex items-center text-white text-xl font-bold">
+                    <FontAwesomeIcon icon="dollar-sign" className="h-6 w-6 mr-2" />
+                    Expensify
+                </Link>
                 <div className="space-x-4">
                     <Link to="/" className="text-gray-300 hover:text-white">Home</Link>
                     {user ? (

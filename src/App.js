@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import Login from './Login';
 import Register from './Register';
 import Expenses from './Expenses';
+import './fontAwesome';
 
 const App = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
