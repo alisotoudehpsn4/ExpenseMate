@@ -16,34 +16,38 @@ const Navbar = ({ user, setUser }) => {
     };
 
     return (
-        <nav className="bg-gray-800 p-4">
-            <div className="container mx-auto flex justify-between items-center">
-                <Link to="/" className="flex items-center text-white text-xl font-bold">
-                    <FontAwesomeIcon icon="dollar-sign" className="h-6 w-6 mr-2" />
-                    Expensify
-                </Link>
-                <div className="flex items-center space-x-4">
-                    <Link to="/" className="text-gray-300 hover:text-white">Home</Link>
-                    {user ? (
-                        <>
-                            <Link to="/expenses" className="text-gray-300 hover:text-white">Expenses</Link>
-                            <Link to="/analytics" className="text-gray-300 hover:text-white">Analytics</Link> {/* Add Analytics link */}
-                            <button
-                                onClick={handleLogout}
-                                className="text-gray-300 hover:text-white"
-                            >
-                                Logout
-                            </button>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/login" className="text-gray-300 hover:text-white">Login</Link>
-                            <Link to="/register" className="text-gray-300 hover:text-white">Register</Link>
-                        </>
-                    )}
-                </div>
-            </div>
-        </nav>
+
+<nav className="bg-gray-800 p-4">
+    <div className="flex justify-between items-center">
+        <div className="flex items-center flex-grow">
+            <Link to="/" className="flex items-center text-white text-xl font-bold">
+                <FontAwesomeIcon icon="dollar-sign" className="h-6 w-6 mr-2" />
+                Expensify
+            </Link>
+        </div>
+        <div className="flex items-center space-x-4">
+            <Link to="/" className="text-gray-300 hover:text-white">Home</Link>
+            {user ? (
+                <>
+                    
+                    <Link to="/analytics" className="text-gray-300 hover:text-white">Analytics</Link>
+                    <button
+                        onClick={handleLogout}
+                        className="text-gray-300 hover:text-white"
+                    >
+                        Logout
+                    </button>
+                </>
+            ) : (
+                <>
+                    <Link to="/login" className="text-gray-300 hover:text-white">Login</Link>
+                    <Link to="/register" className="text-gray-300 hover:text-white">Register</Link>
+                </>
+            )}
+        </div>
+    </div>
+</nav>
+
     );
 };
 
