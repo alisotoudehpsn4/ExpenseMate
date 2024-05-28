@@ -10,6 +10,9 @@ const Expenses = () => {
     const [category, setCategory] = useState('');
     const [message, setMessage] = useState('');
 
+    // Define categories array
+    const categories = ['Food', 'Transport', 'Utilities', 'Health', 'Entertainment', 'Other'];
+
     useEffect(() => {
         const fetchExpenses = async () => {
             try {
@@ -24,14 +27,30 @@ const Expenses = () => {
 
     const handleAddExpense = async (e) => {
         e.preventDefault();
+
+        // Validate amount
+        const parsedAmount = parseFloat(amount);
+        if (isNaN(parsedAmount) || parsedAmount <= 0) {
+            setMessage('Please enter a valid amount greater than zero.');
+            console.log('Invalid amount:', amount);
+            return;
+        }
+
         try {
-            const newExpense = await expenseService.addExpense(description, amount, category);
+            const expenseData = {
+                description, // Correctly set description
+                amount: parsedAmount,
+                category
+            };
+            console.log('Sending expense data:', expenseData); // Log the expense data
+            const newExpense = await expenseService.addExpense(expenseData);
             setExpenses([...expenses, newExpense.data]);
             setDescription('');
             setAmount('');
             setCategory('');
             setMessage('');
         } catch (error) {
+            console.error('Error adding expense:', error.response ? error.response.data : error.message);
             setMessage('Failed to add expense. Please try again.');
         }
     };
@@ -60,7 +79,12 @@ const Expenses = () => {
                     </div>
                     <div>
                         <label className="block text-gray-700">Category:</label>
-                        <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                        <select value={category} onChange={(e) => setCategory(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="" disabled>Select category</option>
+                            {categories.map((cat) => (
+                                <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                        </select>
                     </div>
                     <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg">Add Expense</button>
                 </form>

@@ -16,14 +16,10 @@ const getExpenses = () => {
 };
 
 // Add a new expense
-const addExpense = (description, amount, category) => {
+const addExpense = (expenseData) => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.token) {
-        return axios.post(API_URL, {
-            description,
-            amount,
-            category
-        }, {
+        return axios.post(API_URL, expenseData, {
             headers: { 'x-auth-token': user.token }
         });
     }
