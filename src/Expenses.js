@@ -1,7 +1,7 @@
 // src/Expenses.js
 
 import React, { useState, useEffect } from 'react';
-import expenseService from './services/expenseService';
+import expenseService from './services/expenseService';  // Correct import path
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
@@ -49,16 +49,16 @@ const Expenses = () => {
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="max-w-2xl w-full bg-white p-8 border border-gray-300 rounded-lg">
                 <h2 className="text-2xl font-bold mb-6">Expenses</h2>
-                <form onSubmit={handleAddExpense}>
-                    <div className="mb-4">
+                <form onSubmit={handleAddExpense} className="space-y-4">
+                    <div>
                         <label className="block text-gray-700">Description:</label>
                         <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
                     </div>
-                    <div className="mb-4">
+                    <div>
                         <label className="block text-gray-700">Amount:</label>
                         <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
                     </div>
-                    <div className="mb-4">
+                    <div>
                         <label className="block text-gray-700">Category:</label>
                         <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
                     </div>
