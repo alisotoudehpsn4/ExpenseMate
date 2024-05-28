@@ -1,12 +1,14 @@
 // src/Login.js
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import authService from './services/authService';
 
 const Login = ({ setUser }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -14,6 +16,7 @@ const Login = ({ setUser }) => {
             const user = await authService.login(email, password);
             setUser(user);
             setMessage('');
+            navigate('/expenses');
         } catch (error) {
             setMessage('Login failed. Please check your credentials.');
         }

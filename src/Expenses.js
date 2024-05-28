@@ -12,8 +12,12 @@ const Expenses = () => {
 
     useEffect(() => {
         const fetchExpenses = async () => {
-            const result = await expenseService.getExpenses();
-            setExpenses(result.data);
+            try {
+                const result = await expenseService.getExpenses();
+                setExpenses(result.data);
+            } catch (error) {
+                setMessage('Failed to fetch expenses. Please log in.');
+            }
         };
         fetchExpenses();
     }, []);
