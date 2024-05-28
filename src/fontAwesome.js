@@ -1,6 +1,4 @@
-// src/fontAwesome.js
-
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faDollarSign, faHome, faChartBar, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faDollarSign);
+library.add(faDollarSign, faHome, faChartBar, faSignOutAlt);
