@@ -6,9 +6,9 @@ import EditExpenseModal from './EditExpenseModal'; // Import the edit modal
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
-    const [description, setDescription] = useState('');
-    const [amount, setAmount] = useState('');
-    const [category, setCategory] = useState('');
+    const [addDescription, setAddDescription] = useState('');
+    const [addAmount, setAddAmount] = useState('');
+    const [addCategory, setAddCategory] = useState('');
     const [message, setMessage] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingExpense, setEditingExpense] = useState(null);
@@ -28,25 +28,25 @@ const Expenses = () => {
     const handleAddExpense = async (e) => {
         e.preventDefault();
 
-        const parsedAmount = parseFloat(amount);
+        const parsedAmount = parseFloat(addAmount);
         if (isNaN(parsedAmount) || parsedAmount <= 0) {
             setMessage('Please enter a valid amount greater than zero.');
-            console.log('Invalid amount:', amount);
+            console.log('Invalid amount:', addAmount);
             return;
         }
 
         try {
             const expenseData = {
-                description,
+                description: addDescription,
                 amount: parsedAmount,
-                category
+                category: addCategory
             };
             console.log('Sending expense data:', expenseData);
             const newExpense = await expenseService.addExpense(expenseData);
             setExpenses([...expenses, newExpense.data]);
-            setDescription('');
-            setAmount('');
-            setCategory('');
+            setAddDescription('');
+            setAddAmount('');
+            setAddCategory('');
             setMessage('');
         } catch (error) {
             console.error('Error adding expense:', error.response ? error.response.data : error.message);
@@ -64,23 +64,20 @@ const Expenses = () => {
     };
 
     const handleEditExpense = (expense) => {
-        setDescription(expense.description);
-        setAmount(expense.amount);
-        setCategory(expense.category);
-        setEditingExpense(expense._id);
+        setEditingExpense(expense);
         setIsModalOpen(true);
     };
 
     const handleSaveExpense = async (updatedExpense) => {
         try {
             console.log('Updated expense data:', updatedExpense);
-            const response = await expenseService.updateExpense(editingExpense, {
+            const response = await expenseService.updateExpense(editingExpense._id, {
                 description: updatedExpense.description,
                 amount: updatedExpense.amount,
                 category: updatedExpense.category,
             });
             console.log('Server response:', response);
-            setExpenses(expenses.map(expense => (expense._id === editingExpense ? response.data : expense)));
+            setExpenses(expenses.map(expense => (expense._id === editingExpense._id ? response.data : expense)));
             setIsModalOpen(false);
             setEditingExpense(null);
         } catch (error) {
@@ -88,7 +85,6 @@ const Expenses = () => {
             setMessage('Failed to update expense. Please try again.');
         }
     };
-    
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
@@ -97,15 +93,15 @@ const Expenses = () => {
                 <form onSubmit={handleAddExpense} className="space-y-4">
                     <div>
                         <label className="block text-gray-700">Description:</label>
-                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                        <input type="text" value={addDescription} onChange={(e) => setAddDescription(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
                     </div>
                     <div>
                         <label className="block text-gray-700">Amount:</label>
-                        <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                        <input type="number" value={addAmount} onChange={(e) => setAddAmount(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
                     </div>
                     <div>
                         <label className="block text-gray-700">Category:</label>
-                        <CustomDropdown value={category} onChange={setCategory} />
+                        <CustomDropdown value={addCategory} onChange={setAddCategory} />
                     </div>
                     <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg">Add Expense</button>
                 </form>
@@ -134,7 +130,7 @@ const Expenses = () => {
             <EditExpenseModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                expense={{ description, amount, category }}
+                expense={editingExpense}
                 onSave={handleSaveExpense}
             />
         </div>

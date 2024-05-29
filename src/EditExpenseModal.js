@@ -7,12 +7,12 @@ const EditExpenseModal = ({ isOpen, onClose, expense, onSave }) => {
     const [category, setCategory] = useState('');
 
     useEffect(() => {
-        if (expense) {
+        if (expense && isOpen) {
             setDescription(expense.description);
             setAmount(expense.amount);
             setCategory(expense.category);
         }
-    }, [expense]);
+    }, [expense, isOpen]);
 
     const handleSave = () => {
         onSave({
@@ -21,6 +21,13 @@ const EditExpenseModal = ({ isOpen, onClose, expense, onSave }) => {
             amount: parseFloat(amount),
             category
         });
+    };
+
+    const handleClose = () => {
+        onClose();
+        setDescription('');
+        setAmount('');
+        setCategory('');
     };
 
     if (!isOpen) return null;
@@ -55,7 +62,7 @@ const EditExpenseModal = ({ isOpen, onClose, expense, onSave }) => {
                 </div>
                 <div className="mt-4 flex justify-end space-x-2">
                     <button
-                        onClick={onClose}
+                        onClick={handleClose}
                         className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-700"
                     >
                         Cancel
