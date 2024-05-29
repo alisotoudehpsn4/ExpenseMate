@@ -21,7 +21,7 @@ const Navbar = ({ user, setUser }) => {
                 <div className="flex items-center flex-grow">
                     <Link to="/" className="flex items-center text-white text-xl font-bold">
                         <FontAwesomeIcon icon="dollar-sign" className="h-6 w-6 mr-2" />
-                        Expensify
+                        ExpenseMate
                     </Link>
                 </div>
                 <div className="flex items-center space-x-4">

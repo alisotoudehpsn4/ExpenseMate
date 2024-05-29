@@ -144,7 +144,7 @@ const Expenses = () => {
                     <div>
                         <label className="block text-gray-700">Sort by:</label>
                         <select value={sortCriteria} onChange={handleSortChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                            <option value="">None</option>
+                            
                             <option value="amount">Amount</option>
                             <option value="date">Date</option>
                         </select>
