@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import expenseService from './services/expenseService';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUtensils, faBus, faBolt, faHeartbeat, faFilm, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-
-const categories = [
-    { name: 'Food', icon: faUtensils },
-    { name: 'Transport', icon: faBus },
-    { name: 'Utilities', icon: faBolt },
-    { name: 'Health', icon: faHeartbeat },
-    { name: 'Entertainment', icon: faFilm },
-    { name: 'Other', icon: faEllipsisH },
-];
+import CustomDropdown, { categories } from './CustomDropdown'; // Import the custom dropdown component and categories
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
@@ -84,14 +75,7 @@ const Expenses = () => {
                     </div>
                     <div>
                         <label className="block text-gray-700">Category:</label>
-                        <select value={category} onChange={(e) => setCategory(e.target.value)} required className="w-full px-3 py-2 border border-gray-300 rounded-lg">
-                            <option value="" disabled>Select category</option>
-                            {categories.map((cat) => (
-                                <option key={cat.name} value={cat.name}>
-                                    {cat.name}
-                                </option>
-                            ))}
-                        </select>
+                        <CustomDropdown value={category} onChange={setCategory} />
                     </div>
                     <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg">Add Expense</button>
                 </form>
