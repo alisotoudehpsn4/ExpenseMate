@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import expenseService from './services/expenseService';
 import CustomDropdown, { categories } from './CustomDropdown';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import EditExpenseModal from './EditExpenseModal';
 
 const Expenses = () => {
@@ -10,6 +10,8 @@ const Expenses = () => {
     const [addDescription, setAddDescription] = useState('');
     const [addAmount, setAddAmount] = useState('');
     const [addCategory, setAddCategory] = useState('');
+    const [filterCategory, setFilterCategory] = useState('');
+    const [sortCriteria, setSortCriteria] = useState('');
     const [message, setMessage] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingExpense, setEditingExpense] = useState(null);
@@ -87,6 +89,28 @@ const Expenses = () => {
         }
     };
 
+    const handleFilterChange = (e) => {
+        setFilterCategory(e.target.value);
+    };
+
+    const handleSortChange = (e) => {
+        setSortCriteria(e.target.value);
+    };
+
+    const filteredExpenses = expenses.filter(expense => {
+        if (!filterCategory) return true;
+        return expense.category === filterCategory;
+    });
+
+    const sortedExpenses = filteredExpenses.sort((a, b) => {
+        if (sortCriteria === 'amount') {
+            return b.amount - a.amount;
+        } else if (sortCriteria === 'date') {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+        return 0;
+    });
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="max-w-2xl w-full bg-white p-8 border border-gray-300 rounded-lg">
@@ -107,8 +131,27 @@ const Expenses = () => {
                     <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded-lg">Add Expense</button>
                 </form>
                 {message && <p className="mt-4 text-red-500">{message}</p>}
+                <div className="mt-6 flex justify-between items-center">
+                    <div>
+                        <label className="block text-gray-700">Filter by Category:</label>
+                        <select value={filterCategory} onChange={handleFilterChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="">All</option>
+                            {categories.map((cat) => (
+                                <option key={cat.name} value={cat.name}>{cat.name}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label className="block text-gray-700">Sort by:</label>
+                        <select value={sortCriteria} onChange={handleSortChange} className="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option value="">None</option>
+                            <option value="amount">Amount</option>
+                            <option value="date">Date</option>
+                        </select>
+                    </div>
+                </div>
                 <ul className="mt-6 space-y-4">
-                    {expenses.map((expense) => (
+                    {sortedExpenses.map((expense) => (
                         <li key={expense._id} className="flex justify-between items-center bg-gray-50 p-4 border border-gray-300 rounded-lg">
                             <div>
                                 <p className="font-semibold text-lg">{expense.description}</p>
