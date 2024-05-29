@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomDropdown from './CustomDropdown'; // Import the custom dropdown
 
 const EditExpenseModal = ({ isOpen, onClose, expense, onSave }) => {
-    const [description, setDescription] = React.useState(expense.description);
-    const [amount, setAmount] = React.useState(expense.amount);
-    const [category, setCategory] = React.useState(expense.category);
+    const [description, setDescription] = useState('');
+    const [amount, setAmount] = useState('');
+    const [category, setCategory] = useState('');
+
+    useEffect(() => {
+        if (expense) {
+            setDescription(expense.description);
+            setAmount(expense.amount);
+            setCategory(expense.category);
+        }
+    }, [expense]);
 
     const handleSave = () => {
         onSave({
