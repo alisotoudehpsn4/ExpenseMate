@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import expenseService from './services/expenseService';
-import CustomDropdown, { categories } from './CustomDropdown'; // Import the custom dropdown component and categories
+import CustomDropdown, { categories } from './CustomDropdown';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
-import EditExpenseModal from './EditExpenseModal'; // Import the edit modal
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the icons
+import EditExpenseModal from './EditExpenseModal';
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
@@ -120,8 +121,12 @@ const Expenses = () => {
                             </div>
                             <div className="text-right">
                                 <p className="text-lg text-gray-800">${expense.amount}</p>
-                                <button className="text-blue-500 hover:text-blue-700 ml-4" onClick={() => handleEditExpense(expense)}>Edit</button>
-                                <button className="text-red-500 hover:text-red-700 ml-4" onClick={() => handleDeleteExpense(expense._id)}>Delete</button>
+                                <button className="text-blue-500 hover:text-blue-700 ml-4" onClick={() => handleEditExpense(expense)}>
+                                    <FontAwesomeIcon icon={faEdit} />
+                                </button>
+                                <button className="text-red-500 hover:text-red-700 ml-4" onClick={() => handleDeleteExpense(expense._id)}>
+                                    <FontAwesomeIcon icon={faTrash} />
+                                </button>
                             </div>
                         </li>
                     ))}
