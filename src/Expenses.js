@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import expenseService from './services/expenseService';
 import CustomDropdown, { categories } from './CustomDropdown'; // Import the custom dropdown component and categories
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
+import EditExpenseModal from './EditExpenseModal'; // Import the edit modal
 
 const Expenses = () => {
     const [expenses, setExpenses] = useState([]);
@@ -9,6 +10,8 @@ const Expenses = () => {
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
     const [message, setMessage] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingExpense, setEditingExpense] = useState(null);
 
     useEffect(() => {
         const fetchExpenses = async () => {
@@ -60,6 +63,33 @@ const Expenses = () => {
         }
     };
 
+    const handleEditExpense = (expense) => {
+        setDescription(expense.description);
+        setAmount(expense.amount);
+        setCategory(expense.category);
+        setEditingExpense(expense._id);
+        setIsModalOpen(true);
+    };
+
+    const handleSaveExpense = async (updatedExpense) => {
+        try {
+            console.log('Updated expense data:', updatedExpense);
+            const response = await expenseService.updateExpense(editingExpense, {
+                description: updatedExpense.description,
+                amount: updatedExpense.amount,
+                category: updatedExpense.category,
+            });
+            console.log('Server response:', response);
+            setExpenses(expenses.map(expense => (expense._id === editingExpense ? response.data : expense)));
+            setIsModalOpen(false);
+            setEditingExpense(null);
+        } catch (error) {
+            console.error('Error updating expense:', error.response ? error.response.data : error.message);
+            setMessage('Failed to update expense. Please try again.');
+        }
+    };
+    
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="max-w-2xl w-full bg-white p-8 border border-gray-300 rounded-lg">
@@ -94,12 +124,19 @@ const Expenses = () => {
                             </div>
                             <div className="text-right">
                                 <p className="text-lg text-gray-800">${expense.amount}</p>
+                                <button className="text-blue-500 hover:text-blue-700 ml-4" onClick={() => handleEditExpense(expense)}>Edit</button>
                                 <button className="text-red-500 hover:text-red-700 ml-4" onClick={() => handleDeleteExpense(expense._id)}>Delete</button>
                             </div>
                         </li>
                     ))}
                 </ul>
             </div>
+            <EditExpenseModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                expense={{ description, amount, category }}
+                onSave={handleSaveExpense}
+            />
         </div>
     );
 };
