@@ -10,10 +10,12 @@ import {
     faHeartbeat,
     faFilm,
     faEllipsisH,
-    faTachometerAlt, // Import the tachometer-alt icon
-    faCogs, // Import the settings (cogs) icon
-    faSignInAlt, // Import the sign-in icon
-    faUserPlus // Import the user-plus icon
+    faTachometerAlt,
+    faCogs,
+    faSignInAlt,
+    faUserPlus,
+    faPlusCircle, // Import the plus-circle icon for Add Budget
+    faLightbulb // Import the lightbulb icon for Financial Advice
 } from '@fortawesome/free-solid-svg-icons';
 
 // Add the necessary icons to the library
@@ -31,5 +33,7 @@ library.add(
     faTachometerAlt,
     faCogs,
     faSignInAlt,
-    faUserPlus
+    faUserPlus,
+    faPlusCircle,
+    faLightbulb
 );
