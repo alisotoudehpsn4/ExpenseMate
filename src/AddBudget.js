@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
-import { jwtDecode } from 'jwt-decode'; // Correct the import statement
+import { jwtDecode } from 'jwt-decode'; // Corrected import statement
+
 
 const AddBudget = () => {
     const [budgetAmount, setBudgetAmount] = useState('');
