@@ -9,10 +9,24 @@ const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
     const [showLinks, setShowLinks] = useState(false);
+    const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
 
     const handleLogout = () => {
         logout();
         navigate('/');
+    };
+
+    const confirmLogout = () => {
+        setShowLogoutConfirmation(true);
+    };
+
+    const cancelLogout = () => {
+        setShowLogoutConfirmation(false);
+    };
+
+    const logoutConfirmed = () => {
+        handleLogout();
+        setShowLogoutConfirmation(false);
     };
 
     return (
@@ -51,12 +65,19 @@ const Navbar = () => {
                                     </Link>
                                    
                                     <button
-                                        onClick={handleLogout}
+                                        onClick={confirmLogout}
                                         className="block text-gray-300 hover:text-white mb-4"
                                         data-tooltip-id="logout-tooltip" data-tooltip-content="Logout"
                                     >
                                         <FontAwesomeIcon icon="sign-out-alt" className="h-6 w-6" />
                                     </button>
+                                    {showLogoutConfirmation && (
+                                        <div className="absolute top-0 right-0 mt-12 p-2 bg-white rounded-lg shadow-lg">
+                                            <p>Are you sure you want to log out?</p>
+                                            <button className="px-4 py-2 bg-gray-800 text-white rounded-lg mr-2" onClick={logoutConfirmed}>Logout</button>
+                                            <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg" onClick={cancelLogout}>Cancel</button>
+                                        </div>
+                                    )}
                                 </>
                             ) : (
                                 <>
