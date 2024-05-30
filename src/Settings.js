@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import authService from './services/authService';
+import { AuthContext } from './AuthContext';
 
-const Settings = ({ user }) => {
+const Settings = () => {
+    const { user } = useContext(AuthContext);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [oldPassword, setOldPassword] = useState('');

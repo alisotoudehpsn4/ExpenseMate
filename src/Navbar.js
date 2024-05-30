@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AuthContext } from './AuthContext';
 import { Tooltip } from 'react-tooltip';
 import './fontAwesome';
 
-const Navbar = ({ user, setUser }) => {
+const Navbar = () => {
+    const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        setUser(null);
+        logout();
         navigate('/');
     };
 
@@ -18,7 +18,7 @@ const Navbar = ({ user, setUser }) => {
         <nav className="bg-gray-800 p-4">
             <div className="flex justify-between items-center">
                 <div className="flex items-center">
-                    <Link to="/" className="flex items-center text-white text-xl font-bold" data-tooltip-id="home-tooltip" data-tooltip-content="Home">
+                    <Link to="/dashboard" className="flex items-center text-white text-xl font-bold" data-tooltip-id="home-tooltip" data-tooltip-content="Home">
                         <FontAwesomeIcon icon="dollar-sign" className="h-6 w-6 mr-2" />
                         ExpenseMate
                     </Link>
@@ -35,7 +35,7 @@ const Navbar = ({ user, setUser }) => {
                             <Link to="/analytics" className="text-gray-300 hover:text-white" data-tooltip-id="analytics-tooltip" data-tooltip-content="Analytics">
                                 <FontAwesomeIcon icon="chart-bar" className="h-6 w-6" />
                             </Link>
-                            <Link to="/" className="text-gray-300 hover:text-white" data-tooltip-id="home-tooltip" data-tooltip-content="Home">
+                            <Link to="/dashboard" className="text-gray-300 hover:text-white" data-tooltip-id="home-tooltip" data-tooltip-content="Home">
                                 <FontAwesomeIcon icon="home" className="h-6 w-6" />
                             </Link>
                             <button
@@ -48,12 +48,7 @@ const Navbar = ({ user, setUser }) => {
                         </>
                     ) : (
                         <>
-                            <Link to="/login" className="text-gray-300 hover:text-white" data-tooltip-id="login-tooltip" data-tooltip-content="Login">
-                                <FontAwesomeIcon icon="sign-in-alt" className="h-6 w-6" />
-                            </Link>
-                            <Link to="/register" className="text-gray-300 hover:text-white" data-tooltip-id="register-tooltip" data-tooltip-content="Register">
-                                <FontAwesomeIcon icon="user-plus" className="h-6 w-6" />
-                            </Link>
+                          
                             <Link to="/" className="text-gray-300 hover:text-white" data-tooltip-id="home-tooltip" data-tooltip-content="Home">
                                 <FontAwesomeIcon icon="home" className="h-6 w-6" />
                             </Link>

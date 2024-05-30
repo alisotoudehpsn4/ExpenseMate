@@ -1,23 +1,27 @@
-// src/Login.js
-
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from './services/authService';
+import { AuthContext } from './AuthContext';
+import Cookies from 'js-cookie';
 
-const Login = ({ setUser }) => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const user = await authService.login(email, password);
-            setUser(user);
-            setMessage('');
-            navigate('/dashboard');
+            const response = await authService.login(email, password);
+            if (response) {
+                login(response, Cookies.get('token'));
+                setMessage('');
+                navigate('/dashboard');
+            }
         } catch (error) {
+            console.error('Login error:', error);
             setMessage('Login failed. Please check your credentials.');
         }
     };

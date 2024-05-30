@@ -1,25 +1,25 @@
-// src/Register.js
-
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import authService from './services/authService';
+import { AuthContext } from './AuthContext';
 
-const Register = ({ setUser }) => {
+const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            await authService.register(name, email, password);
-            const user = await authService.login(email, password);
-            setUser(user);
+            const response = await authService.register(name, email, password);
+            login(response.user, response.token);
             setMessage('');
-            navigate('/expenses');
+            navigate('/dashboard');
         } catch (error) {
+            console.error('Register error:', error);
             setMessage('Registration failed. Please try again.');
         }
     };
