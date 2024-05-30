@@ -32,7 +32,7 @@ const Navbar = () => {
                             <Link to="/expenses" className="text-gray-300 hover:text-white" data-tooltip-id="expenses-tooltip" data-tooltip-content="Expenses">
                                 <FontAwesomeIcon icon="dollar-sign" className="h-6 w-6" />
                             </Link>
-                            <Link to="/analytics" className="text-gray-300 hover:text-white" data-tooltip-id="analytics-tooltip" data-tooltip-content="Analytics">
+                            <Link to="/analytics" className="text-gray-300 hover:text-white" data-tooltip-id="analytics-tooltip" data-tooltip-content="Expenses Analytics">
                                 <FontAwesomeIcon icon="chart-bar" className="h-6 w-6" />
                             </Link>
                             <Link to="/add-budget" className="text-gray-300 hover:text-white" data-tooltip-id="add-budget-tooltip" data-tooltip-content="Add Budget">

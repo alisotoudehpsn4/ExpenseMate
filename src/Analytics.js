@@ -110,7 +110,7 @@ const Analytics = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="max-w-2xl w-full bg-white p-8 border border-gray-300 rounded-lg">
-                <h2 className="text-2xl font-bold mb-6">Expense Analytics</h2>
+                <h2 className="text-2xl font-bold mb-6">Expenses Analytics</h2>
                 {loading ? (
                     <p>Loading...</p>
                 ) : (
