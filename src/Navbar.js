@@ -33,7 +33,7 @@ const Navbar = () => {
         <nav className="bg-gray-800 p-4">
             <div className="flex justify-between items-center">
                 <div className="flex items-center">
-                    <Link to="/dashboard" className="flex items-center text-white text-xl font-bold" data-tooltip-id="home-tooltip" data-tooltip-content="Home">
+                    <Link to="/" className="flex items-center text-white text-xl font-bold" data-tooltip-id="home-tooltip" data-tooltip-content="Home">
                         <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-500 text-white mr-2">
                             <FontAwesomeIcon icon={faWallet} className="h-6 w-6" />
                         </div>
@@ -87,9 +87,7 @@ const Navbar = () => {
                                     <Link to="/register" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="register-tooltip" data-tooltip-content="Register">
                                         <FontAwesomeIcon icon="user-plus" className="h-6 w-6" />
                                     </Link>
-                                    <Link to="/" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="home-tooltip" data-tooltip-content="Home">
-                                        <FontAwesomeIcon icon="home" className="h-6 w-6" />
-                                    </Link>
+                                  
                                 </>
                             )}
                         </div>
