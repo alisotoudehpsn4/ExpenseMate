@@ -11,14 +11,28 @@ import Settings from './Settings';
 import './fontAwesome';
 
 const App = () => {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
+    const [user, setUser] = useState(() => {
+        const savedUser = localStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : null;
+    });
 
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
+            console.log("Stored user:", storedUser); // Debugging line
+            console.log("Stored user name:", storedUser.name); // Debugging line
+            console.log("Stored user email:", storedUser.email); // Debugging line
             setUser(storedUser);
         }
     }, []);
+
+    useEffect(() => {
+        console.log("User state in App component:", user); // Debugging line
+        if (user) {
+            console.log("User state name:", user.name); // Debugging line
+            console.log("User state email:", user.email); // Debugging line
+        }
+    }, [user]);
 
     return (
         <Router>

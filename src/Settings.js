@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import authService from './services/authService';
 
 const Settings = ({ user }) => {
-    const [name, setName] = useState(user ? user.name : '');
-    const [email, setEmail] = useState(user ? user.email : '');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
 
     useEffect(() => {
         if (user) {
+            console.log("User name in useEffect:", user.name);
+            console.log("User email in useEffect:", user.email);
             setName(user.name || '');
             setEmail(user.email || '');
         }

@@ -44,7 +44,7 @@ const Dashboard = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="max-w-3xl w-full bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold mb-6 text-center">Dashboard</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">Welcome Back </h2>
                 <div className="mb-6 text-center">
                     <h3 className="text-xl font-semibold mb-4">Total Expenses</h3>
                     <p className="text-3xl">${totalExpenses.toFixed(2)}</p>
