@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import expenseService from './services/expenseService';
 import { Pie } from 'react-chartjs-2';
+import { AuthContext } from './AuthContext';
 
 const Dashboard = () => {
+    const { user } = useContext(AuthContext);
     const [totalExpenses, setTotalExpenses] = useState(0);
     const [recentExpenses, setRecentExpenses] = useState([]);
     const [expenseCategories, setExpenseCategories] = useState({});
@@ -44,7 +46,7 @@ const Dashboard = () => {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="max-w-3xl w-full bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold mb-6 text-center">Welcome Back </h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">Welcome Back, {user?.name}</h2>
                 <div className="mb-6 text-center">
                     <h3 className="text-xl font-semibold mb-4">Total Expenses</h3>
                     <p className="text-3xl">${totalExpenses.toFixed(2)}</p>
