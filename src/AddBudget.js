@@ -1,10 +1,36 @@
 // components/AddBudget.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AddBudget = () => {
     const [budgetAmount, setBudgetAmount] = useState('');
     const [message, setMessage] = useState('');
+    const [budgets, setBudgets] = useState([]);
+
+    useEffect(() => {
+        fetchBudgets();
+    }, []);
+
+    const fetchBudgets = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setMessage('No token found, authorization denied');
+                return;
+            }
+
+            const response = await axios.get('http://localhost:5002/api/budget/budgets', {
+                headers: {
+                    'x-auth-token': token,
+                },
+            });
+
+            setBudgets(response.data);
+        } catch (error) {
+            console.error('There was an error fetching the budgets:', error);
+            setMessage('There was an error fetching the budgets.');
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -20,7 +46,7 @@ const AddBudget = () => {
                 { budgetAmount },
                 {
                     headers: {
-                        'x-auth-token': token, // Ensure the token is included in the headers
+                        'x-auth-token': token,
                     },
                 }
             );
@@ -28,6 +54,7 @@ const AddBudget = () => {
             if (response.status === 201) {
                 setMessage('Budget added successfully!');
                 setBudgetAmount('');
+                fetchBudgets(); // Update the list after adding a new budget
             } else {
                 setMessage('There was an error adding the budget.');
             }
@@ -60,6 +87,12 @@ const AddBudget = () => {
                 </button>
             </form>
             {message && <p className="mt-4 text-center text-gray-700">{message}</p>}
+            <h3 className="text-xl font-bold mt-6 text-gray-800">Budgets</h3>
+            <ul className="list-disc pl-5">
+                {budgets.map((budget) => (
+                    <li key={budget._id} className="text-gray-700">{budget.budgetAmount}</li>
+                ))}
+            </ul>
         </div>
     );
 };

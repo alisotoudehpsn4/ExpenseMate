@@ -1,4 +1,3 @@
-// controllers/budgetController.js
 const Budget = require('../models/Budget');
 const Expense = require('../models/Expense');
 
@@ -43,7 +42,19 @@ const generateFinancialAdvice = (budget, totalExpenses) => {
     }
 };
 
+// New function to get all budgets for the authenticated user
+const getBudgets = async (req, res) => {
+    try {
+        const budgets = await Budget.find({ userId: req.user.id });
+        res.json(budgets);
+    } catch (error) {
+        console.error('Server error:', error);
+        res.status(500).json({ msg: 'Server error' });
+    }
+};
+
 module.exports = {
     addBudget,
-    getFinancialAdvice
+    getFinancialAdvice,
+    getBudgets, // Include the new getBudgets function
 };
