@@ -14,8 +14,10 @@ import {
     faCogs,
     faSignInAlt,
     faUserPlus,
-    faPlusCircle, // Import the plus-circle icon for Add Budget
-    faLightbulb // Import the lightbulb icon for Financial Advice
+    faPlusCircle,
+    faLightbulb,
+    faChartLine, // Line chart icon for tracking/analysis
+    faArrowUp // Upward trend arrow for growth
 } from '@fortawesome/free-solid-svg-icons';
 
 // Add the necessary icons to the library
@@ -35,5 +37,7 @@ library.add(
     faSignInAlt,
     faUserPlus,
     faPlusCircle,
-    faLightbulb
+    faLightbulb,
+    faChartLine,
+    faArrowUp
 );
