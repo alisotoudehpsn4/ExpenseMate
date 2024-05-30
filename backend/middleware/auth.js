@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = function(req, res, next) {
     // Get token from header
-    const token = req.header('x-auth-token');
+    const token = req.header('x-auth-token'); // Ensure this matches how you set the token in frontend
 
     // Check if not token
     if (!token) {
@@ -11,7 +11,6 @@ module.exports = function(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
         req.user = decoded.user;
         next();
     } catch (err) {

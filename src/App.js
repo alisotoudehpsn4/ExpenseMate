@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './Navbar';
 import Home from './Home';
 import Login from './Login';
@@ -9,12 +9,8 @@ import Analytics from './Analytics';
 import Dashboard from './Dashboard';
 import Settings from './Settings';
 import './fontAwesome';
-import AuthProvider, { AuthContext } from './AuthContext';
-
-const ProtectedRoute = ({ element: Component }) => {
-    const { user } = useContext(AuthContext);
-    return user ? <Component /> : <Navigate to="/login" />;
-};
+import AuthProvider from './AuthContext';
+import ProtectedRoute from './ProtectedRoute';
 
 const App = () => {
     return (
@@ -29,7 +25,7 @@ const App = () => {
                         <Route path="/expenses" element={<ProtectedRoute element={Expenses} />} />
                         <Route path="/analytics" element={<ProtectedRoute element={Analytics} />} />
                         <Route path="/settings" element={<ProtectedRoute element={Settings} />} />
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={<ProtectedRoute element={Home} />} />
                     </Routes>
                 </div>
             </Router>
