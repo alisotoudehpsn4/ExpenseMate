@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthContext } from './AuthContext';
 import { Tooltip } from 'react-tooltip';
-import { faWallet, faBars, faTimes } from '@fortawesome/free-solid-svg-icons'; // Importing new icons
+import { faWallet, faBars, faTimes, faTachometerAlt, faCogs, faDollarSign, faChartBar, faPlusCircle, faLightbulb, faSignOutAlt, faSignInAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons'; // Updated import
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
@@ -49,19 +49,22 @@ const Navbar = () => {
                             {user ? (
                                 <>
                                     <Link to="/settings" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="settings-tooltip" data-tooltip-content="Settings">
-                                        <FontAwesomeIcon icon="cogs" className="h-6 w-6" />
+                                        <FontAwesomeIcon icon={faCogs} className="h-6 w-6" />
                                     </Link>
                                     <Link to="/expenses" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="expenses-tooltip" data-tooltip-content="Expenses">
-                                        <FontAwesomeIcon icon="dollar-sign" className="h-6 w-6" />
+                                        <FontAwesomeIcon icon={faDollarSign} className="h-6 w-6" />
+                                    </Link>
+                                    <Link to="/dashboard" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="dashboard-tooltip" data-tooltip-content="Dashboard">
+                                        <FontAwesomeIcon icon={faTachometerAlt} className="h-6 w-6" />
                                     </Link>
                                     <Link to="/analytics" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="analytics-tooltip" data-tooltip-content="Expenses Analytics">
-                                        <FontAwesomeIcon icon="chart-bar" className="h-6 w-6" />
+                                        <FontAwesomeIcon icon={faChartBar} className="h-6 w-6" />
                                     </Link>
                                     <Link to="/add-budget" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="add-budget-tooltip" data-tooltip-content="Add Budget">
-                                        <FontAwesomeIcon icon="plus-circle" className="h-6 w-6" />
+                                        <FontAwesomeIcon icon={faPlusCircle} className="h-6 w-6" />
                                     </Link>
                                     <Link to="/financial-advice" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="financial-advice-tooltip" data-tooltip-content="Financial Advice">
-                                        <FontAwesomeIcon icon="lightbulb" className="h-6 w-6" />
+                                        <FontAwesomeIcon icon={faLightbulb} className="h-6 w-6" />
                                     </Link>
                                    
                                     <button
@@ -69,7 +72,7 @@ const Navbar = () => {
                                         className="block text-gray-300 hover:text-white mb-4"
                                         data-tooltip-id="logout-tooltip" data-tooltip-content="Logout"
                                     >
-                                        <FontAwesomeIcon icon="sign-out-alt" className="h-6 w-6" />
+                                        <FontAwesomeIcon icon={faSignOutAlt} className="h-6 w-6" />
                                     </button>
                                     {showLogoutConfirmation && (
                                         <div className="absolute top-0 right-0 mt-12 p-2 bg-white rounded-lg shadow-lg">
@@ -82,10 +85,10 @@ const Navbar = () => {
                             ) : (
                                 <>
                                     <Link to="/login" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="login-tooltip" data-tooltip-content="Login">
-                                        <FontAwesomeIcon icon="sign-in-alt" className="h-6 w-6" />
+                                        <FontAwesomeIcon icon={faSignInAlt} className="h-6 w-6" />
                                     </Link>
                                     <Link to="/register" className="block text-gray-300 hover:text-white mb-4" data-tooltip-id="register-tooltip" data-tooltip-content="Register">
-                                        <FontAwesomeIcon icon="user-plus" className="h-6 w-6" />
+                                        <FontAwesomeIcon icon={faUserPlus} className="h-6 w-6" />
                                     </Link>
                                   
                                 </>
@@ -96,6 +99,7 @@ const Navbar = () => {
                 <Tooltip id="home-tooltip" place="bottom" type="dark" effect="solid" />
                 <Tooltip id="settings-tooltip" place="bottom" type="dark" effect="solid" />
                 <Tooltip id="expenses-tooltip" place="bottom" type="dark" effect="solid" />
+                <Tooltip id="dashboard-tooltip" place="bottom" type="dark" effect="solid" /> {/* Updated */}
                 <Tooltip id="analytics-tooltip" place="bottom" type="dark" effect="solid" />
                 <Tooltip id="add-budget-tooltip" place="bottom" type="dark" effect="solid" />
                 <Tooltip id="financial-advice-tooltip" place="bottom" type="dark" effect="solid" />
