@@ -1,9 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const API_URL = 'http://localhost:5002/api/expenses/';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api/expenses/';
 
-// Get all expenses
 const getExpenses = () => {
     const token = Cookies.get('token');
     if (token) {
@@ -14,7 +13,6 @@ const getExpenses = () => {
     return Promise.reject('No token available');
 };
 
-// Add a new expense
 const addExpense = (expenseData) => {
     const token = Cookies.get('token');
     if (token) {
@@ -25,7 +23,6 @@ const addExpense = (expenseData) => {
     return Promise.reject('No token available');
 };
 
-// Update an expense
 const updateExpense = (id, description, amount, category) => {
     const token = Cookies.get('token');
     if (token) {
@@ -40,7 +37,6 @@ const updateExpense = (id, description, amount, category) => {
     return Promise.reject('No token available');
 };
 
-// Delete an expense
 const deleteExpense = (id) => {
     const token = Cookies.get('token');
     if (token) {

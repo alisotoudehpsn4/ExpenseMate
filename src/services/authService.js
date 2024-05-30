@@ -1,15 +1,11 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const API_URL = 'http://localhost:5002/api/auth/';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api/auth/';
 
 const register = async (name, email, password) => {
     try {
-        const response = await axios.post(API_URL + 'register', {
-            name,
-            email,
-            password
-        });
+        const response = await axios.post(API_URL + 'register', { name, email, password });
         console.log('Register response:', response.data); // Debugging line
         return response.data;
     } catch (error) {
@@ -20,10 +16,7 @@ const register = async (name, email, password) => {
 
 const login = async (email, password) => {
     try {
-        const response = await axios.post(API_URL + 'login', {
-            email,
-            password
-        });
+        const response = await axios.post(API_URL + 'login', { email, password });
         console.log('Login response:', response.data); // Debugging line
         if (response.data.token) {
             Cookies.set('user', JSON.stringify(response.data.user));
