@@ -16,7 +16,7 @@ const Login = ({ setUser }) => {
             const user = await authService.login(email, password);
             setUser(user);
             setMessage('');
-            navigate('/expenses');
+            navigate('/dashboard');
         } catch (error) {
             setMessage('Login failed. Please check your credentials.');
         }

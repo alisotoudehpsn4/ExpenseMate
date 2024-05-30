@@ -25,7 +25,7 @@ const Navbar = ({ user, setUser }) => {
                 <div className="flex items-center space-x-4">
                     {user ? (
                         <>
-                            <Link to="/dashboard" className="text-gray-300 hover:text-white">
+                            <Link to="/settings" className="text-gray-300 hover:text-white">
                                 <FontAwesomeIcon icon="tachometer-alt" className="h-6 w-6" />
                             </Link>
                             <Link to="/expenses" className="text-gray-300 hover:text-white">

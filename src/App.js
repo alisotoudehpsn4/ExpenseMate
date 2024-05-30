@@ -6,14 +6,18 @@ import Login from './Login';
 import Register from './Register';
 import Expenses from './Expenses';
 import Analytics from './Analytics';
-import Dashboard from './Dashboard'; // Import Dashboard component
+import Dashboard from './Dashboard';
+import Settings from './Settings';
 import './fontAwesome';
 
 const App = () => {
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || {});
 
     useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem('user')));
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        if (storedUser) {
+            setUser(storedUser);
+        }
     }, []);
 
     return (
@@ -23,10 +27,11 @@ const App = () => {
                 <Routes>
                     <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login setUser={setUser} />} />
                     <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register setUser={setUser} />} />
-                    <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} /> {/* Add Dashboard route */}
+                    <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" />} />
                     <Route path="/expenses" element={user ? <Expenses /> : <Navigate to="/login" />} />
                     <Route path="/analytics" element={user ? <Analytics /> : <Navigate to="/login" />} />
-                    <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Home />} /> {/* Redirect to dashboard */}
+                    <Route path="/settings" element={user ? <Settings user={user} /> : <Navigate to="/login" />} />
+                    <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Home />} />
                 </Routes>
             </div>
         </Router>
