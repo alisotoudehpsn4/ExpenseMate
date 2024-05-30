@@ -1,27 +1,11 @@
-// components/FinancialAdvice.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 
-const FinancialAdvice = ({ userId }) => {
-    const [advice, setAdvice] = useState('');
-
-    useEffect(() => {
-        const fetchAdvice = async () => {
-            try {
-                const response = await axios.get(`/api/budget/advice/${userId}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }); // Ensure the token is included in the headers
-                setAdvice(response.data.advice);
-            } catch (error) {
-                console.error('There was an error fetching the financial advice!', error);
-            }
-        };
-
-        fetchAdvice();
-    }, [userId]);
-
+const FinancialAdvice = () => {
     return (
-        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4 text-gray-800">Financial Advice</h2>
-            <p className="text-gray-700">{advice}</p>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+            <div className="max-w-md w-full bg-white p-8 border border-gray-300 rounded-lg shadow-lg">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800">Currently Under Development</h2>
+            </div>
         </div>
     );
 };
