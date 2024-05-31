@@ -10,7 +10,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://<your-deployed-url>.vercel.app'],
+  origin: ['http://localhost:3000', 'https://expense-mate-2-ree1ewdrp-alisotoudehpsn4s-projects.vercel.app'],
   credentials: true // Allow cookies to be sent with requests
 }));
 app.use(express.json()); // Parse JSON bodies
