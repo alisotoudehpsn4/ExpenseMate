@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -10,6 +11,9 @@ const app = express();
 // Middleware
 app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Parse JSON bodies
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -22,6 +26,16 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/api/auth', require('./routes/auth')); // Auth routes
 app.use('/api/expenses', require('./routes/expenses')); // Expenses routes
 app.use('/api/budget', require('./routes/budget')); // Budget routes
+
+// Serve the manifest.json file
+app.get('/manifest.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'manifest.json'));
+});
+
+// Serve the React app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+});
 
 // Start the server
 const PORT = process.env.PORT || 5002;
