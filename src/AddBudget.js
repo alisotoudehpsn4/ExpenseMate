@@ -1,98 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { jwtDecode } from 'jwt-decode'; // Corrected import statement
-
+import budgetService from './services/budgetService';
+import expenseService from './services/expenseService';
 
 const AddBudget = () => {
     const [budgetAmount, setBudgetAmount] = useState('');
     const [message, setMessage] = useState('');
     const [budgets, setBudgets] = useState([]);
-    const [financialAdvice, setFinancialAdvice] = useState('');
+    const [data, setData] = useState({
+        labels: ['Total Budget', 'Total Expenses', 'Remaining Budget'],
+        datasets: [{
+            label: 'Amount',
+            data: [0, 0, 0],
+            backgroundColor: ['#4caf50', '#f44336', '#2196f3'],
+        }],
+    });
 
-    const calculateTotalBudget = () => budgets.reduce((total, budget) => total + budget.budgetAmount, 0);
-
-    useEffect(() => {
-        fetchBudgets();
-        fetchFinancialAdvice();
+    const calculateTotalBudget = useCallback((budgets) => {
+        return budgets.reduce((total, budget) => total + budget.budgetAmount, 0);
     }, []);
 
-    const fetchBudgets = async () => {
+    const calculateTotalExpenses = useCallback((expenses) => {
+        return expenses.reduce((total, expense) => total + expense.amount, 0);
+    }, []);
+
+    const updateChartData = useCallback((budgets, expenses) => {
+        const totalBudget = calculateTotalBudget(budgets);
+        const totalExpenses = calculateTotalExpenses(expenses);
+        setData({
+            labels: ['Total Budget', 'Total Expenses', 'Remaining Budget'],
+            datasets: [{
+                label: 'Amount',
+                data: [totalBudget, totalExpenses, totalBudget - totalExpenses],
+                backgroundColor: ['#4caf50', '#f44336', '#2196f3'],
+            }],
+        });
+    }, [calculateTotalBudget, calculateTotalExpenses]);
+
+    const fetchBudgetsAndExpenses = useCallback(async () => {
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                setMessage('No token found, authorization denied');
-                return;
-            }
-
-            const response = await axios.get('http://localhost:5002/api/budget/budgets', {
-                headers: {
-                    'x-auth-token': token,
-                },
-            });
-
-            setBudgets(response.data);
+            const [budgetsResult, expensesResult] = await Promise.all([
+                budgetService.getBudgets(),
+                expenseService.getExpenses(),
+            ]);
+            setBudgets(budgetsResult.data);
+            updateChartData(budgetsResult.data, expensesResult.data);
         } catch (error) {
-            console.error('There was an error fetching the budgets:', error);
-            setMessage('There was an error fetching the budgets.');
+            console.error('Error fetching data:', error);
+            setMessage('Error fetching data.');
         }
-    };
+    }, [updateChartData]);
 
-    const fetchFinancialAdvice = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                setMessage('No token found, authorization denied');
-                return;
-            }
-
-            const decoded = jwtDecode(token); // Correct the usage
-            const userId = decoded.user.id;
-
-            const response = await axios.get(`http://localhost:5002/api/budget/advice/${userId}`, {
-                headers: {
-                    'x-auth-token': token,
-                },
-            });
-
-            const { advice } = response.data;
-            setFinancialAdvice(advice);
-        } catch (error) {
-            console.error('There was an error fetching the financial advice:', error);
-            setMessage('There was an error fetching the financial advice.');
-        }
-    };
+    useEffect(() => {
+        fetchBudgetsAndExpenses();
+    }, [fetchBudgetsAndExpenses]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                setMessage('No token found, authorization denied');
-                return;
-            }
-
-            const response = await axios.post(
-                'http://localhost:5002/api/budget',
-                { budgetAmount },
-                {
-                    headers: {
-                        'x-auth-token': token,
-                    },
-                }
-            );
-
-            if (response.status === 201) {
+            const { status } = await budgetService.addBudget({ budgetAmount });
+            if (status === 201) {
                 setMessage('Budget added successfully!');
                 setBudgetAmount('');
-                fetchBudgets();
-                fetchFinancialAdvice();
+                fetchBudgetsAndExpenses();
             } else {
-                setMessage('There was an error adding the budget.');
+                setMessage('Error adding budget.');
             }
         } catch (error) {
-            console.error('There was an error adding the budget:', error);
-            setMessage('There was an error adding the budget.');
+            console.error('Error adding budget:', error);
+            setMessage('Error adding budget.');
         }
     };
 
@@ -101,27 +77,16 @@ const AddBudget = () => {
         if (!newAmount) return;
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.put(
-                `http://localhost:5002/api/budget/${id}`,
-                { budgetAmount: newAmount },
-                {
-                    headers: {
-                        'x-auth-token': token,
-                    },
-                }
-            );
-
-            if (response.status === 200) {
+            const { status } = await budgetService.updateBudget(id, { budgetAmount: newAmount });
+            if (status === 200) {
                 setMessage('Budget updated successfully!');
-                fetchBudgets();
-                fetchFinancialAdvice();
+                fetchBudgetsAndExpenses();
             } else {
-                setMessage('There was an error updating the budget.');
+                setMessage('Error updating budget.');
             }
         } catch (error) {
-            console.error('There was an error updating the budget:', error);
-            setMessage('There was an error updating the budget.');
+            console.error('Error updating budget:', error);
+            setMessage('Error updating budget.');
         }
     };
 
@@ -129,54 +94,18 @@ const AddBudget = () => {
         if (!window.confirm('Are you sure you want to delete this budget?')) return;
 
         try {
-            const token = localStorage.getItem('token');
-            const response = await axios.delete(
-                `http://localhost:5002/api/budget/${id}`,
-                {
-                    headers: {
-                        'x-auth-token': token,
-                    },
-                }
-            );
-
-            if (response.status === 200) {
+            const { status } = await budgetService.deleteBudget(id);
+            if (status === 200) {
                 setMessage('Budget deleted successfully!');
-                fetchBudgets();
-                fetchFinancialAdvice();
+                fetchBudgetsAndExpenses();
             } else {
-                setMessage('There was an error deleting the budget.');
+                setMessage('Error deleting budget.');
             }
         } catch (error) {
-            console.error('There was an error deleting the budget:', error);
-            setMessage('There was an error deleting the budget.');
+            console.error('Error deleting budget:', error);
+            setMessage('Error deleting budget.');
         }
     };
-
-    useEffect(() => {
-        const totalExpenses = 9380.43; // Assuming the correct total expenses fetched from Dashboard.js
-        setData({
-            labels: ['Total Budget', 'Total Expenses', 'Remaining Budget'],
-            datasets: [
-                {
-                    label: 'Amount',
-                    data: [calculateTotalBudget(), totalExpenses, calculateTotalBudget() - totalExpenses],
-                    backgroundColor: ['#4caf50', '#f44336', '#2196f3'],
-                },
-            ],
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [budgets]);
-
-    const [data, setData] = useState({
-        labels: ['Total Budget', 'Total Expenses', 'Remaining Budget'],
-        datasets: [
-            {
-                label: 'Amount',
-                data: [calculateTotalBudget(), 0, calculateTotalBudget()],
-                backgroundColor: ['#4caf50', '#f44336', '#2196f3'],
-            },
-        ],
-    });
 
     return (
         <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
@@ -214,12 +143,6 @@ const AddBudget = () => {
             <div className="mt-6">
                 <Bar data={data} />
             </div>
-            {financialAdvice && (
-                <div className="mt-6 bg-gray-100 p-4 rounded-lg">
-                    <h4 className="text-lg font-semibold text-gray-800">Nice!</h4>
-                    <p className="text-gray-700">{financialAdvice}</p>
-                </div>
-            )}
         </div>
     );
 };
