@@ -13,7 +13,7 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing
 app.use(express.json()); // Parse JSON bodies
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -29,24 +29,24 @@ app.use('/api/budget', require('./routes/budget')); // Budget routes
 
 // Serve the manifest.json file and other static assets
 app.get('/manifest.json', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'manifest.json'));
+  res.sendFile(path.join(__dirname, '../public', 'manifest.json'));
 });
 
 app.get('/favicon.ico', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'favicon.ico'));
+  res.sendFile(path.join(__dirname, '../public', 'favicon.ico'));
 });
 
 app.get('/logo192.png', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'logo192.png'));
+  res.sendFile(path.join(__dirname, '../public', 'logo192.png'));
 });
 
 app.get('/logo512.png', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'logo512.png'));
+  res.sendFile(path.join(__dirname, '../public', 'logo512.png'));
 });
 
 // Serve the React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
 // Start the server
