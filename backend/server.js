@@ -9,7 +9,10 @@ dotenv.config(); // Load environment variables from .env file
 const app = express();
 
 // Middleware
-app.use(cors()); // Enable Cross-Origin Resource Sharing
+app.use(cors({
+  origin: ['http://localhost:3000', 'https://<your-deployed-url>.vercel.app'],
+  credentials: true // Allow cookies to be sent with requests
+}));
 app.use(express.json()); // Parse JSON bodies
 
 // Serve static files from the React app
