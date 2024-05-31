@@ -27,9 +27,21 @@ app.use('/api/auth', require('./routes/auth')); // Auth routes
 app.use('/api/expenses', require('./routes/expenses')); // Expenses routes
 app.use('/api/budget', require('./routes/budget')); // Budget routes
 
-// Serve the manifest.json file
+// Serve the manifest.json file and other static assets
 app.get('/manifest.json', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build', 'manifest.json'));
+});
+
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'favicon.ico'));
+});
+
+app.get('/logo192.png', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'logo192.png'));
+});
+
+app.get('/logo512.png', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'logo512.png'));
 });
 
 // Serve the React app
